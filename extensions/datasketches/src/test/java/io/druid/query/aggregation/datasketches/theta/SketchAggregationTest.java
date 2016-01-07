@@ -122,8 +122,21 @@ public class SketchAggregationTest
         results.get(0)
     );
   }
+    @Test
+    public void testSketchDataIngestAndQuery2() throws Exception
+    {
+        Sequence seq = helper.createIndexAndRunQueryOnSegment(
+                new File(SketchAggregationTest.class.getClassLoader().getResource("sketch_test_data.tsv").getFile()),
+                readFileFromClasspathAsString("sketch_test_data_record_parser.json"),
+                readFileFromClasspathAsString("sketch_test_data_aggregators.json"),
+                0,
+                QueryGranularity.NONE,
+                5,
+                readFileFromClasspathAsString("sketch_test_data_group_by_query2.json")
+        );
+    }
 
-  @Test
+    @Test
   public void testThetaCardinalityOnSimpleColumn() throws Exception
   {
     Sequence seq = helper.createIndexAndRunQueryOnSegment(
