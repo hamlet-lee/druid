@@ -75,6 +75,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.UUID;
 
 /**
  */
@@ -487,11 +488,12 @@ public class HadoopDruidIndexerConfig
   {
     return new Path(
         String.format(
-            "%s/%s/%s/%s",
+            "%s/%s/%s/%s/%s",
             getWorkingPath(),
             schema.getDataSchema().getDataSource(),
             schema.getTuningConfig().getVersion().replace(":", ""),
-            schema.getUniqueId()
+            schema.getUniqueId(),
+            UUID.randomUUID().toString()
         )
     );
   }
