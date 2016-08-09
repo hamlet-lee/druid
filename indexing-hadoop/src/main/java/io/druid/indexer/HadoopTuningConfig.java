@@ -139,6 +139,7 @@ public class HadoopTuningConfig implements TuningConfig
         //if within 10 seconds, return old value
         return lastDateTime.toString();
       }else{
+        lastDateTime = maybeNewDateTime;
         return maybeNewDateTime.toString();
       }
     }
