@@ -106,7 +106,7 @@ public class HadoopTuningConfig implements TuningConfig
   )
   {
     this.workingPath = workingPath;
-    this.version = version == null ? new DateTime().toString() : version;
+    this.version = version == null ? getEasilyConflictVersion() : version;
     this.partitionsSpec = partitionsSpec == null ? DEFAULT_PARTITIONS_SPEC : partitionsSpec;
     this.shardSpecs = shardSpecs == null ? DEFAULT_SHARD_SPECS : shardSpecs;
     this.indexSpec = indexSpec == null ? DEFAULT_INDEX_SPEC : indexSpec;
@@ -123,6 +123,25 @@ public class HadoopTuningConfig implements TuningConfig
     this.buildV9Directly = buildV9Directly == null ? DEFAULT_BUILD_V9_DIRECTLY : buildV9Directly;
     this.numBackgroundPersistThreads = numBackgroundPersistThreads == null ? DEFAULT_NUM_BACKGROUND_PERSIST_THREADS : numBackgroundPersistThreads;
     Preconditions.checkArgument(this.numBackgroundPersistThreads >= 0, "Not support persistBackgroundCount < 0");
+  }
+
+  //hamlet-lee: for demonstrate issue https://github.com/druid-io/druid/issues/2707
+  static DateTime lastDateTime = null;
+  private static String getEasilyConflictVersion()
+  {
+    if( lastDateTime == null ) {
+      DateTime newDateTime = new DateTime();
+      lastDateTime = newDateTime;
+      return newDateTime.toString();
+    }else{
+      DateTime maybeNewDateTime = new DateTime();
+      if( maybeNewDateTime.getMillis() - lastDateTime.getMillis() < 10 * 1000) {
+        //if within 10 seconds, return old value
+        return lastDateTime.toString();
+      }else{
+        return maybeNewDateTime.toString();
+      }
+    }
   }
 
   @JsonProperty
