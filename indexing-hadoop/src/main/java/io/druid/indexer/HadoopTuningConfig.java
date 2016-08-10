@@ -50,7 +50,7 @@ public class HadoopTuningConfig implements TuningConfig
   {
     return new HadoopTuningConfig(
         null,
-        new DateTime().toString(),
+        getEasilyConflictVersion(),
         DEFAULT_PARTITIONS_SPEC,
         DEFAULT_SHARD_SPECS,
         DEFAULT_INDEX_SPEC,
@@ -126,14 +126,14 @@ public class HadoopTuningConfig implements TuningConfig
   }
 
   //hamlet-lee: for demonstrate issue https://github.com/druid-io/druid/issues/2707
-  private static String getEasilyConflictVersion()
+  public static String getEasilyConflictVersion()
   {    
     long now = System.currentTimeMillis();
 	
-	//align to 10 seconds, so easily create conflicting version in consecutive calling (even across processes)
-	String ret = new DateTime(now / 10000 * 10000).toString();
-	System.out.println("getVersion=" + ret);
-	return ret;
+	  //align to 10 seconds, so easily create conflicting version in consecutive calling (even across processes)
+    String ret = new DateTime(now / 10000 * 10000).toString();
+    System.out.println("getVersion=" + ret);
+    return ret;
   }
 
   @JsonProperty

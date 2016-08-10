@@ -38,6 +38,7 @@ import com.metamx.common.guava.Comparators;
 import com.metamx.common.guava.FunctionalIterable;
 import com.metamx.emitter.EmittingLogger;
 import io.druid.common.utils.JodaUtils;
+import io.druid.indexer.HadoopTuningConfig;
 import io.druid.indexing.common.TaskLock;
 import io.druid.indexing.common.task.Task;
 import org.joda.time.DateTime;
@@ -270,7 +271,7 @@ public class TaskLockbox
           // our clock to be monotonic and have enough resolution since the last time we created a TaskLock for the same
           // interval. This may not always be true; to assure it we would need to use some method of timekeeping other
           // than the wall clock.
-          version = new DateTime().toString();
+          version = HadoopTuningConfig.getEasilyConflictVersion();
         }
 
         posseToUse = new TaskLockPosse(new TaskLock(task.getGroupId(), dataSource, interval, version));
