@@ -50,7 +50,7 @@ public class HadoopTuningConfig implements TuningConfig
   {
     return new HadoopTuningConfig(
         null,
-        getEasilyConflictVersion(),
+        new DateTime().toString(),
         DEFAULT_PARTITIONS_SPEC,
         DEFAULT_SHARD_SPECS,
         DEFAULT_INDEX_SPEC,
@@ -133,6 +133,8 @@ public class HadoopTuningConfig implements TuningConfig
 	  //align to 10 seconds, so easily create conflicting version in consecutive calling (even across processes)
     String ret = new DateTime(now / 10000 * 10000).toString();
     System.out.println("getVersion=" + ret);
+    //print stack trace
+    new Exception("print stack").printStackTrace();
     return ret;
   }
 
