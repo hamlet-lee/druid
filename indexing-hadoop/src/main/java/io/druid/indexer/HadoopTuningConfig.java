@@ -126,23 +126,14 @@ public class HadoopTuningConfig implements TuningConfig
   }
 
   //hamlet-lee: for demonstrate issue https://github.com/druid-io/druid/issues/2707
-  static DateTime lastDateTime = null;
   private static String getEasilyConflictVersion()
-  {
-    if( lastDateTime == null ) {
-      DateTime newDateTime = new DateTime();
-      lastDateTime = newDateTime;
-      return newDateTime.toString();
-    }else{
-      DateTime maybeNewDateTime = new DateTime();
-      if( maybeNewDateTime.getMillis() - lastDateTime.getMillis() < 10 * 1000) {
-        //if within 10 seconds, return old value
-        return lastDateTime.toString();
-      }else{
-        lastDateTime = maybeNewDateTime;
-        return maybeNewDateTime.toString();
-      }
-    }
+  {    
+    long now = System.currentTimeMillis();
+	
+	//align to 10 seconds, so easily create conflicting version in consecutive calling (even across processes)
+	String ret = new DateTime(now / 10000 * 10000).toString();
+	System.out.println("getVersion=" + ret);
+	return ret;
   }
 
   @JsonProperty
