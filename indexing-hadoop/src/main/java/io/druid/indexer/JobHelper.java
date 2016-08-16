@@ -76,7 +76,6 @@ public class JobHelper
 {
   private static final Logger log = new Logger(JobHelper.class);
 
-  private static final Set<Path> existing = Sets.newHashSet();
 
   private static final int NUM_RETRIES = 8;
   private static final int SECONDS_BETWEEN_RETRIES = 2;
@@ -252,9 +251,8 @@ public class JobHelper
     final Path hdfsPath = new Path(intermediateClassPath, jarFile.getName());
 
     // existing is used to prevent uploading file multiple times in same run.
-    if (!existing.contains(hdfsPath)) {
+    if (!fs.exists(hdfsPath)) {
       uploadJar(jarFile, hdfsPath, fs);
-      existing.add(hdfsPath);
     }
     job.addFileToClassPath(hdfsPath);
   }
