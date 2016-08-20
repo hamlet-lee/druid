@@ -429,6 +429,14 @@ public class KafkaIndexTask extends AbstractTask implements ChatHandler
 
                   fireDepartmentMetrics.incrementProcessed();
                 } else {
+                  log.info("thrown away "
+                            + new String(record.value())
+                            + " from "
+                            + record.topic()
+                            + "-"
+                            + record.partition()
+                            + "-"
+                            + record.offset());
                   fireDepartmentMetrics.incrementThrownAway();
                 }
               }
