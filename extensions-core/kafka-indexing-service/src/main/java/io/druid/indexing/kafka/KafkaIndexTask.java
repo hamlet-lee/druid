@@ -363,6 +363,8 @@ public class KafkaIndexTask extends AbstractTask implements ChatHandler
           // The retrying business is because the KafkaConsumer throws OffsetOutOfRangeException if the seeked-to
           // offset is not present in the topic-partition. This can happen if we're asking a task to read from data
           // that has not been written yet (which is totally legitimate). So let's wait for it to show up.
+          int successLimit = 10000;
+          int thrownLimit = 10000;
           final ConsumerRecords<byte[], byte[]> records = RetryUtils.retry(
               new Callable<ConsumerRecords<byte[], byte[]>>()
               {
@@ -426,18 +428,31 @@ public class KafkaIndexTask extends AbstractTask implements ChatHandler
                     // If we allow continuing, then consider blacklisting the interval for a while to avoid constant checks.
                     throw new ISE("Could not allocate segment for row with timestamp[%s]", row.getTimestamp());
                   }
-
+                  if( successLimit > 0 ) {
+                    log.info("success processed "
+                             + new String(record.value(), "UTF-8")
+                             + " from "
+                             + record.topic()
+                             + "-"
+                             + record.partition()
+                             + "-"
+                             + record.offset());
+                    successLimit--;
+                  }
                   fireDepartmentMetrics.incrementProcessed();
                 } else {
-                  log.info("thrown away "
-                            + new String(record.value())
-                            + " from "
-                            + record.topic()
-                            + "-"
-                            + record.partition()
-                            + "-"
-                            + record.offset());
-                  fireDepartmentMetrics.incrementThrownAway();
+                  if( thrownLimit > 0) {
+                    log.info("thrown away "
+                             + new String(record.value(), "UTF-8")
+                             + " from "
+                             + record.topic()
+                             + "-"
+                             + record.partition()
+                             + "-"
+                             + record.offset());
+                    fireDepartmentMetrics.incrementThrownAway();
+                    thrownLimit--;
+                  }
                 }
               }
               catch (ParseException e) {
