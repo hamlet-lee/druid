@@ -22,6 +22,8 @@ package org.apache.hadoop.fs;
 import io.druid.java.util.common.logger.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * This wrapper class is created to be able to access some of the the "protected" methods inside Hadoop's
@@ -46,16 +48,28 @@ public class HadoopFsWrapper
    * @return true if operation succeeded, false if replaceExisting == false and destination already exists
    *
    * @throws IOException if trying to overwrite a non-empty directory
+   * @throws IOException if trying to overwrite a non-empty directory
    */
   public static boolean rename(FileSystem fs, Path from, Path to, boolean replaceExisting) throws IOException
   {
     try {
-      fs.rename(from, to, replaceExisting ? Options.Rename.OVERWRITE : Options.Rename.NONE);
+      Method renameMethod = fs.getClass().getMethod("rename", Path.class, Path.class, Options.Rename[].class);
+      renameMethod.invoke(fs, from, to, new Options.Rename[]{replaceExisting ? Options.Rename.OVERWRITE : Options.Rename.NONE});
       return true;
     }
-    catch (FileAlreadyExistsException ex) {
-      log.info(ex, "Destination exists while renaming [%s] to [%s]", from, to);
-      return false;
+    catch (IOException ex) {
+        //the exception may from different class loader than current class's
+        //so we check by name
+        if(ex.getClass().getSimpleName().equals(FileAlreadyExistsException.class.getSimpleName())) {
+            log.info(ex, "Destination exists while renaming [%s] to [%s]", from, to);
+            return false;
+        }
+        log.warn(ex, "Failed to rename [%s] to [%s].", from, to);
+        throw ex;
+    }
+    catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        log.error(e, "Failed to rename [%s] to [%s].", from, to);
+        throw new RuntimeException("faild to call 'rename' by reflection",e);
     }
   }
 }
