@@ -24,7 +24,12 @@ import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -85,6 +90,36 @@ public class ApproximateHistogramTest
     Assert.assertEquals("max value matches expexted max", 45, h.max(), 0);
 
     Assert.assertEquals("bin count matches expected bin count", 5, h.binCount());
+  }
+
+  @Test
+  public void testAccuracy() throws Exception
+  {
+    String fileName = "/api_duration.txt";
+    float[] values = readFloats(fileName);
+
+    ApproximateHistogram h = buildHistogram(8192, values);
+
+    float[] quantiles = h.getQuantiles(new float[]{0.5f});
+
+    Assert.assertArrayEquals("Quantile result do not match expected value", new float[]{190.0f}, quantiles, 0.1f);
+  }
+
+  private float[] readFloats(String fileName) throws IOException
+  {
+    InputStream inputStream = ApproximateHistogramTest.class.getResourceAsStream(fileName);
+    BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+    List<Float> floatList = new ArrayList<>();
+    String line = null;
+    while( (line = in.readLine()) != null) {
+      floatList.add(Float.parseFloat(line));
+    }
+
+    float[] values = new float[floatList.size()];
+    for(int i=0; i<values.length; i++ ) {
+      values[i] = floatList.get(i);
+    }
+    return values;
   }
 
   @Test
