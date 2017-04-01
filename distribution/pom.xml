@@ -81,6 +81,8 @@
                                 <argument>io.druid.extensions:druid-caffeine-cache</argument>
                                 <argument>-c</argument>
                                 <argument>io.druid.extensions:druid-datasketches</argument>
+				<argument>-c</argument>
+                                <argument>io.druid.extensions:druid-datasketches-experiments</argument>
                                 <argument>-c</argument>
                                 <argument>io.druid.extensions:druid-hdfs-storage</argument>
                                 <argument>-c</argument>
