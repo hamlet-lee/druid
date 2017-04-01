@@ -63,14 +63,14 @@
         <guava.version>16.0.1</guava.version>
         <guice.version>4.1.0</guice.version>
         <jetty.version>9.3.16.v20170120</jetty.version>
-        <jersey.version>1.19</jersey.version>
+        <jersey.version>1.9</jersey.version>
         <!-- Watch out for Hadoop compatibility when updating to >= 2.5; see https://github.com/druid-io/druid/pull/1669 -->
         <jackson.version>2.4.6</jackson.version>
         <log4j.version>2.5</log4j.version>
         <netty.version>4.1.6.Final</netty.version>
         <slf4j.version>1.7.12</slf4j.version>
         <!-- If compiling with different hadoop version also modify default hadoop coordinates in TaskConfig.java -->
-        <hadoop.compile.version>2.3.0</hadoop.compile.version>
+        <hadoop.compile.version>2.7.2</hadoop.compile.version>
         <hive.version>2.0.0</hive.version>
         <powermock.version>1.6.6</powermock.version>
     </properties>
@@ -85,7 +85,7 @@
         <module>server</module>
         <module>sql</module>
         <module>services</module>
-        <module>integration-tests</module>
+        <!--module>integration-tests</module-->
         <module>benchmarks</module>
         <module>aws-common</module>
         <module>java-util</module>

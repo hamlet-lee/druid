@@ -152,10 +152,21 @@ public class JobHelper
       return;
     }
 
+    // 目前的配置会影响hadoop日志，需要去掉一些打日志的包
+    Set<String> exludes = Sets.newHashSet(
+        "ext-log4j-1.0.0-SNAPSHOT.jar",
+        "scribe-log4j-1.0.0-SNAPSHOT.jar",
+        "log4j-1.2-api-2.5.jar",
+        "log4j-jul-2.5.jar",
+        "log4j-api-2.5.jar",
+        "log4j-slf4j-impl-2.5.jar",
+        "commons-logging-1.1.1.jar"
+    );
+
     for (String jarFilePath : jarFiles) {
 
       final File jarFile = new File(jarFilePath);
-      if (jarFile.getName().endsWith(".jar")) {
+      if (jarFile.getName().endsWith(".jar") && !exludes.contains(jarFile.getName()) ) {
         try {
           RetryUtils.retry(
               new Callable<Boolean>()
