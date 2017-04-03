@@ -155,11 +155,11 @@ public class DoublesSketchAggregatorFactory extends AggregatorFactory
     return maxIntermediateSize;
   }
 
-  @Override
-  public Object getAggregatorStartValue()
-  {
-    return DoublesSketchHolder.buildSketch(size);
-  }
+//  @Override
+//  public Object getAggregatorStartValue()
+//  {
+//    return DoublesSketchHolder.buildSketch(size);
+//  }
 
   @Override
   public List<String> requiredFields()
