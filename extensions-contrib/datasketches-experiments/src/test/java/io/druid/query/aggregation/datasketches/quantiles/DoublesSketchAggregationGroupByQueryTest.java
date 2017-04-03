@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import io.druid.data.input.MapBasedRow;
 import io.druid.data.input.Row;
-import io.druid.granularity.QueryGranularities;
+import io.druid.java.util.common.granularity.Granularities;
 import io.druid.java.util.common.guava.Sequence;
 import io.druid.java.util.common.guava.Sequences;
 import io.druid.query.aggregation.AggregationTestHelper;
@@ -92,7 +92,7 @@ public class DoublesSketchAggregationGroupByQueryTest
         readFileFromClasspathAsString("quantiles/quantiles_test_data_aggregators.json"),
         s1,
         0,
-        QueryGranularities.NONE,
+        Granularities.NONE,
         5
     );
 
@@ -103,7 +103,7 @@ public class DoublesSketchAggregationGroupByQueryTest
         readFileFromClasspathAsString("quantiles/quantiles_test_data_aggregators.json"),
         s2,
         0,
-        QueryGranularities.NONE,
+        Granularities.NONE,
         5000
     );
   }
