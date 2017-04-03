@@ -25,6 +25,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.yahoo.sketches.quantiles.DoublesSketch;
 import io.druid.query.aggregation.PostAggregator;
+import io.druid.query.aggregation.AggregatorFactory;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -154,5 +155,11 @@ public class EqualSplitsHistogramPostAggregator implements PostAggregator
            ", numSplits=" + numSplits +
            ", fieldName='" + fieldName + '\'' +
            '}';
+  }
+
+  @Override
+  public PostAggregator decorate(Map<String, AggregatorFactory> aggregators)
+  {
+    return this;
   }
 }

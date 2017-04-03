@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Ordering;
 import com.yahoo.sketches.quantiles.DoublesSketch;
 import io.druid.query.aggregation.PostAggregator;
+import io.druid.query.aggregation.AggregatorFactory;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -114,5 +115,10 @@ public class MinPostAggregator implements PostAggregator
            "name='" + name + '\'' +
            ", fieldName='" + fieldName + '\'' +
            '}';
+  }
+  @Override
+  public PostAggregator decorate(Map<String, AggregatorFactory> aggregators)
+  {
+    return this;
   }
 }

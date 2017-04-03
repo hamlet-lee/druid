@@ -25,6 +25,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.yahoo.sketches.quantiles.DoublesSketch;
 import io.druid.query.aggregation.PostAggregator;
+import io.druid.query.aggregation.AggregatorFactory;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -130,5 +131,11 @@ public class QuantilesPostAggregator implements PostAggregator
            ", fractions=" + Arrays.toString(fractions) +
            ", fieldName='" + fieldName + '\'' +
            '}';
+  }
+
+  @Override
+  public PostAggregator decorate(Map<String, AggregatorFactory> aggregators)
+  {
+    return this;
   }
 }
