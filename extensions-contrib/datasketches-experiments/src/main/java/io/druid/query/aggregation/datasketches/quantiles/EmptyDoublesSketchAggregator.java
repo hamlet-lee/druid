@@ -58,11 +58,11 @@ public class EmptyDoublesSketchAggregator implements Aggregator
     throw new UnsupportedOperationException("Not implemented");
   }
 
-  @Override
-  public String getName()
-  {
-    return name;
-  }
+//  @Override
+//  public String getName()
+//  {
+//    return name;
+//  }
 
   @Override
   public void close()
