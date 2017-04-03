@@ -42,4 +42,12 @@ public class PostAggregatorIds
   public static final byte DATA_SKETCHES_SKETCH_SET = 18;
   public static final byte VARIANCE_STANDARD_DEVIATION = 19;
   public static final byte FINALIZING_FIELD_ACCESS = 20;
+
+  public static final byte QUANTILES_SKETCHES_QUANTILE = 100;
+  public static final byte QUANTILES_SKETCHES_QUANTILES = 101;
+  public static final byte QUANTILES_SKETCHES_MIN = 102;
+  public static final byte QUANTILES_SKETCHES_MAX = 103;
+  public static final byte QUANTILES_SKETCHES_EQUAL_SPLITS_HISTOGRAM = 104;
+  public static final byte QUANTILES_SKETCHES_CUSTOM_SPLIT_HISTOGRAM = 105;
+
 }
