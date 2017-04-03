@@ -26,6 +26,8 @@ import com.google.common.collect.ImmutableSet;
 import com.yahoo.sketches.quantiles.DoublesSketch;
 import io.druid.query.aggregation.PostAggregator;
 import io.druid.query.aggregation.AggregatorFactory;
+import io.druid.query.aggregation.post.PostAggregatorIds;
+import io.druid.query.cache.CacheKeyBuilder;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -143,5 +145,13 @@ public class CustomSplitsHistogramPostAggregator implements PostAggregator
   public PostAggregator decorate(Map<String, AggregatorFactory> aggregators)
   {
     return this;
+  }
+
+  @Override
+  public byte[] getCacheKey()
+  {
+    return new CacheKeyBuilder(PostAggregatorIds.QUANTILES_SKETCHES_CUSTOM_SPLIT_HISTOGRAM)
+        .appendString(fieldName)
+        .build();
   }
 }

@@ -27,6 +27,8 @@ import com.google.common.collect.Ordering;
 import com.yahoo.sketches.quantiles.DoublesSketch;
 import io.druid.query.aggregation.PostAggregator;
 import io.druid.query.aggregation.AggregatorFactory;
+import io.druid.query.aggregation.post.PostAggregatorIds;
+import io.druid.query.cache.CacheKeyBuilder;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -123,4 +125,11 @@ public class MaxPostAggregator implements PostAggregator
   {
     return this;
   }
-}
+
+  @Override
+  public byte[] getCacheKey()
+  {
+    return new CacheKeyBuilder(PostAggregatorIds.QUANTILES_SKETCHES_MAX)
+        .appendString(fieldName)
+        .build();
+  }}
