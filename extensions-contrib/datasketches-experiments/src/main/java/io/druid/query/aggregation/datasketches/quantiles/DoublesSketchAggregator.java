@@ -94,7 +94,7 @@ public class DoublesSketchAggregator implements Aggregator
       try {
         union.update(Double.parseDouble((String) update));
       }
-      catch (NumberFormatException e) {
+      catch (Exception e) {
         //lisn: ignore such case
       }
     } else {
