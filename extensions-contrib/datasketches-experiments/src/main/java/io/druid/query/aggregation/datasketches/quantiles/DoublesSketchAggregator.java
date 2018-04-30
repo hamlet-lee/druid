@@ -19,7 +19,6 @@
 
 package io.druid.query.aggregation.datasketches.quantiles;
 
-import com.ibm.icu.text.NumberFormat;
 import com.yahoo.sketches.quantiles.DoublesUnion;
 import io.druid.java.util.common.ISE;
 import io.druid.query.aggregation.Aggregator;
